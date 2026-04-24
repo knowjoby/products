@@ -189,12 +189,16 @@
       margin-bottom: 4rem;
     }
 
+    .grid a {
+      display: flex;
+    }
+
     .card {
       background: var(--card-bg);
       padding: 1.75rem;
       display: flex;
       flex-direction: column;
-      min-height: 200px;
+      flex: 1;
       transition: background 0.15s;
     }
 
@@ -243,7 +247,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-top: 1.25rem;
+      margin-top: auto;
       padding-top: 1rem;
       border-top: 1px solid var(--border);
     }
@@ -367,6 +371,7 @@
     'Claudesecagent':         ['AI'],
     'llmlab':                 ['AI', 'Learning'],
     'ghost-blogger-repo':     ['AI', 'Web'],
+    'pmnotes':                ['Writing'],
   };
 
   const ICONS = {
@@ -405,7 +410,20 @@
     document.getElementById('grid').innerHTML = '<div class="loading">Loading projects</div>';
     try {
       const r = await fetch(`https://api.github.com/users/${USER}/repos?sort=updated&per_page=30`);
-      repos = (await r.json()).filter(x => !x.fork);
+      const EXCLUDE = [
+        'skills-scale-institutional-knowledge-using-copilot-spaces',
+        'skills-getting-started-with-github-copilot',
+        'products',
+        'substack-charts',
+        'substack-prompt-generator',
+        'badomainlearning',
+        'llmlab',
+        'ghost-blogger-repo',
+        'blog',
+        'Claudesecagent',
+        'Ai-product-managers-blog',
+      ];
+      repos = (await r.json()).filter(x => !x.fork && !EXCLUDE.includes(x.name));
 
       const totalStars  = repos.reduce((s, r) => s + r.stargazers_count, 0);
       const totalForks  = repos.reduce((s, r) => s + r.forks_count, 0);
@@ -462,7 +480,7 @@
               <span class="arrow">↗</span>
             </div>
             <div class="card-name">${repo.name}</div>
-            <div class="card-desc">${repo.description || ''}</div>
+            ${repo.description ? `<div class="card-desc">${repo.description}</div>` : ''}
             <div class="card-bottom">
               <span class="card-tag">${tag}</span>
               ${repo.stargazers_count ? `<span class="card-stars">★ ${repo.stargazers_count}</span>` : ''}
