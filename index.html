@@ -109,7 +109,7 @@
 
     .headline {
       font-family: 'Instrument Serif', serif;
-      font-size: 48px;
+      font-size: clamp(40px, 7vw, 72px);
       font-weight: 400;
       font-style: italic;
       line-height: 1.1;
@@ -129,8 +129,10 @@
     }
 
     .stat-value {
-      font-size: 20px;
-      font-weight: 700;
+      font-family: 'Instrument Serif', serif;
+      font-size: 28px;
+      font-weight: 400;
+      font-style: italic;
       color: var(--fg);
       line-height: 1;
     }
@@ -199,10 +201,11 @@
       display: flex;
       flex-direction: column;
       flex: 1;
-      transition: background 0.15s;
+      transition: background 0.2s;
     }
 
     .card:hover { background: var(--hover-bg); }
+    .card:hover .arrow { color: var(--fg); transform: translate(2px, -2px); }
 
     .card-top {
       display: flex;
@@ -226,6 +229,8 @@
       font-size: 16px;
       color: var(--muted);
       line-height: 1;
+      display: inline-block;
+      transition: color 0.2s, transform 0.2s;
     }
 
     .card-name {
