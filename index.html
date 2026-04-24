@@ -17,6 +17,7 @@
       --text-secondary: #666666;
       --text-muted: #999999;
       --border: #e5e5e5;
+      --accent: #000000;
 
       --color-python: #E1F5EE;
       --color-javascript: #FAEEDA;
@@ -25,22 +26,25 @@
       --color-default: #EEEDFE;
     }
 
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg-primary: #0a0a0a;
-        --bg-secondary: #1a1a1a;
-        --bg-tertiary: rgba(255, 255, 255, 0.08);
-        --text-primary: #ffffff;
-        --text-secondary: #b0b0b0;
-        --text-muted: #666666;
-        --border: #333333;
+    html.dark-mode {
+      color-scheme: dark;
+    }
 
-        --color-python: #0d3d35;
-        --color-javascript: #3d3422;
-        --color-swift: #3d2822;
-        --color-html: #0d2240;
-        --color-default: #2a2840;
-      }
+    html.dark-mode :root {
+      --bg-primary: #0a0a0a;
+      --bg-secondary: #1a1a1a;
+      --bg-tertiary: rgba(255, 255, 255, 0.08);
+      --text-primary: #ffffff;
+      --text-secondary: #b0b0b0;
+      --text-muted: #666666;
+      --border: #333333;
+      --accent: #ffffff;
+
+      --color-python: #0d3d35;
+      --color-javascript: #3d3422;
+      --color-swift: #3d2822;
+      --color-html: #0d2240;
+      --color-default: #2a2840;
     }
 
     * {
@@ -51,6 +55,7 @@
 
     html {
       scroll-behavior: smooth;
+      transition: background-color 0.3s, color 0.3s;
     }
 
     body {
@@ -78,10 +83,22 @@
       text-transform: uppercase;
     }
 
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
     .nav-logo {
       font-weight: 700;
       font-size: 11px;
       letter-spacing: 0.1em;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
     }
 
     .nav-links {
@@ -98,6 +115,21 @@
 
     .nav-links a:hover {
       color: var(--text-secondary);
+    }
+
+    /* Dark Mode Toggle */
+    .theme-toggle {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      transition: transform 0.2s;
+      padding: 4px 8px;
+      color: var(--text-primary);
+    }
+
+    .theme-toggle:hover {
+      transform: scale(1.1);
     }
 
     /* Hero */
@@ -138,6 +170,37 @@
       color: var(--text-muted);
       white-space: nowrap;
       padding-top: 1rem;
+    }
+
+    /* Analytics Widget */
+    .analytics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 1rem;
+      margin-bottom: 3rem;
+      padding: 1.5rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+    }
+
+    .analytics-stat {
+      text-align: center;
+    }
+
+    .analytics-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .analytics-label {
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
     }
 
     /* Filters */
@@ -200,10 +263,8 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
-    @media (prefers-color-scheme: dark) {
-      .card:hover {
-        box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
-      }
+    html.dark-mode .card:hover {
+      box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
     }
 
     /* Card header with icon + arrow */
@@ -265,8 +326,9 @@
       color: var(--text-muted);
     }
 
-    .card-language {
+    .card-category {
       font-weight: 500;
+      color: var(--text-primary);
     }
 
     .card-stars {
@@ -355,6 +417,18 @@
         padding: 2rem 1.5rem;
       }
 
+      nav {
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 3rem;
+      }
+
+      .nav-right {
+        width: 100%;
+        order: 3;
+        justify-content: space-between;
+      }
+
       .hero {
         flex-direction: column;
         gap: 1.5rem;
@@ -366,6 +440,10 @@
 
       .grid {
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      }
+
+      .analytics {
+        grid-template-columns: repeat(2, 1fr);
       }
 
       footer {
@@ -380,12 +458,19 @@
   <div class="container">
     <!-- Nav -->
     <nav>
-      <div class="nav-logo">knowjoby</div>
-      <ul class="nav-links">
-        <li><a href="https://github.com/knowjoby" target="_blank">GitHub</a></li>
-        <li><a href="https://www.linkedin.com/in/knowjoby/" target="_blank">LinkedIn</a></li>
-        <li><a href="https://substack.com/@jobyjohn25" target="_blank">Substack</a></li>
-      </ul>
+      <div class="nav-left">
+        <div class="nav-logo">knowjoby</div>
+      </div>
+      <div class="nav-right">
+        <ul class="nav-links">
+          <li><a href="https://github.com/knowjoby" target="_blank">GitHub</a></li>
+          <li><a href="https://www.linkedin.com/in/knowjoby/" target="_blank">LinkedIn</a></li>
+          <li><a href="https://substack.com/@jobyjohn25" target="_blank">Substack</a></li>
+        </ul>
+        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode">
+          <span id="themeIcon">🌙</span>
+        </button>
+      </div>
     </nav>
 
     <!-- Hero -->
@@ -396,6 +481,26 @@
       </div>
       <div class="project-count" id="projectCount">Loading<span class="dots"></span></div>
     </section>
+
+    <!-- Analytics -->
+    <div class="analytics" id="analytics">
+      <div class="analytics-stat">
+        <div class="analytics-value" id="statProjects">0</div>
+        <div class="analytics-label">Projects</div>
+      </div>
+      <div class="analytics-stat">
+        <div class="analytics-value" id="statStars">0</div>
+        <div class="analytics-label">Stars</div>
+      </div>
+      <div class="analytics-stat">
+        <div class="analytics-value" id="statForks">0</div>
+        <div class="analytics-label">Forks</div>
+      </div>
+      <div class="analytics-stat">
+        <div class="analytics-value" id="statYears">0</div>
+        <div class="analytics-label">Years</div>
+      </div>
+    </div>
 
     <!-- Filters -->
     <div class="filters" id="filters"></div>
@@ -415,17 +520,21 @@
   <script>
     const GITHUB_USER = 'knowjoby';
 
-    // Manual tag mappings
-    const REPO_TAGS = {
-      'claude-usage-tracker': ['python', 'ai', 'cli'],
-      'ACTI': ['javascript', 'ai', 'simulation'],
-      'artificial-times': ['python', 'ai', 'agent'],
-      'SubstackSaver': ['javascript', 'web', 'extension'],
-      'simplenotepadformac': ['swift', 'macos'],
-      'blog': ['python', 'web'],
-      'products': ['html', 'web'],
-      'autonomous-research-lab': ['javascript', 'ai', 'web'],
-      'reading': ['html', 'web']
+    // Category mappings (replaces language-based filtering)
+    const REPO_CATEGORIES = {
+      'claude-usage-tracker': ['AI', 'CLI'],
+      'ACTI': ['AI', 'Simulation'],
+      'artificial-times': ['AI', 'Agent'],
+      'SubstackSaver': ['Web', 'Extension'],
+      'simplenotepadformac': ['macOS', 'Productivity'],
+      'blog': ['Web', 'Content'],
+      'products': ['Web', 'Portfolio'],
+      'autonomous-research-lab': ['AI', 'Web'],
+      'reading': ['Web', 'Content'],
+      'Ai-product-managers-blog': ['AI', 'Content'],
+      'Claudesecagent': ['AI'],
+      'claude-usage-tracker': ['AI', 'CLI'],
+      'llmlab': ['AI', 'Learning']
     };
 
     // Icon mappings
@@ -450,7 +559,28 @@
     };
 
     let allRepos = [];
-    let allTags = new Set();
+    let allCategories = new Set();
+
+    // Dark Mode
+    function initTheme() {
+      const savedTheme = localStorage.getItem('portfolio_theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const isDark = savedTheme ? savedTheme === 'dark' : prefersDark;
+
+      if (isDark) {
+        document.documentElement.classList.add('dark-mode');
+        document.getElementById('themeIcon').textContent = '☀️';
+      } else {
+        document.documentElement.classList.remove('dark-mode');
+        document.getElementById('themeIcon').textContent = '🌙';
+      }
+    }
+
+    function toggleTheme() {
+      const isDark = document.documentElement.classList.toggle('dark-mode');
+      document.getElementById('themeIcon').textContent = isDark ? '☀️' : '🌙';
+      localStorage.setItem('portfolio_theme', isDark ? 'dark' : 'light');
+    }
 
     async function loadProjects() {
       try {
@@ -460,16 +590,17 @@
         allRepos = await response.json();
         allRepos = allRepos.filter(r => !r.fork);
 
-        // Collect all tags
-        allTags = new Set();
+        // Collect all categories
+        allCategories = new Set();
         allRepos.forEach(repo => {
-          const tags = getTags(repo);
-          tags.forEach(tag => allTags.add(tag));
+          const cats = getCategories(repo);
+          cats.forEach(cat => allCategories.add(cat));
         });
 
         renderFilters();
         renderProjects(allRepos);
         updateProjectCount();
+        updateAnalytics();
 
       } catch (error) {
         document.getElementById('grid').innerHTML = `<div class="error">Error loading projects. Please try again.</div>`;
@@ -477,14 +608,11 @@
       }
     }
 
-    function getTags(repo) {
-      if (REPO_TAGS[repo.name]) {
-        return REPO_TAGS[repo.name];
+    function getCategories(repo) {
+      if (REPO_CATEGORIES[repo.name]) {
+        return REPO_CATEGORIES[repo.name];
       }
-      if (repo.language) {
-        return [repo.language.toLowerCase()];
-      }
-      return [];
+      return ['Other'];
     }
 
     function getIcon(repoName) {
@@ -492,36 +620,32 @@
     }
 
     function getIconColor(repoName) {
-      const tags = getTags({ name: repoName, language: null });
-      const firstTag = tags[0];
-
-      if (firstTag === 'python') return LANGUAGE_COLORS['Python'];
-      if (firstTag === 'javascript') return LANGUAGE_COLORS['JavaScript'];
-      if (firstTag === 'swift') return LANGUAGE_COLORS['Swift'];
-      if (firstTag === 'html') return LANGUAGE_COLORS['HTML'];
-
+      const language = allRepos.find(r => r.name === repoName)?.language;
+      if (language && LANGUAGE_COLORS[language]) {
+        return LANGUAGE_COLORS[language];
+      }
       return LANGUAGE_COLORS['default'];
     }
 
     function renderFilters() {
       const container = document.getElementById('filters');
-      const sortedTags = Array.from(allTags).sort();
+      const sortedCategories = Array.from(allCategories).sort();
 
       let html = '<button class="filter-pill active" onclick="filterProjects(null)">All</button>';
-      sortedTags.forEach(tag => {
-        html += `<button class="filter-pill" onclick="filterProjects('${tag}')">${tag}</button>`;
+      sortedCategories.forEach(cat => {
+        html += `<button class="filter-pill" onclick="filterProjects('${cat}')">${cat}</button>`;
       });
 
       container.innerHTML = html;
     }
 
-    function filterProjects(tag) {
+    function filterProjects(category) {
       const pills = document.querySelectorAll('.filter-pill');
       pills.forEach(p => p.classList.remove('active'));
       event.target.classList.add('active');
 
-      if (tag) {
-        const filtered = allRepos.filter(repo => getTags(repo).includes(tag));
+      if (category) {
+        const filtered = allRepos.filter(repo => getCategories(repo).includes(category));
         renderProjects(filtered);
       } else {
         renderProjects(allRepos);
@@ -538,8 +662,8 @@
 
       container.innerHTML = repos.map(repo => {
         const color = getIconColor(repo.name);
-        const tags = getTags(repo);
-        const firstTag = tags[0] || 'web';
+        const cats = getCategories(repo);
+        const firstCat = cats[0] || 'Other';
 
         return `
           <a href="${repo.html_url}" target="_blank" style="text-decoration: none; color: inherit;">
@@ -553,7 +677,7 @@
               <div class="card-name">${repo.name}</div>
               <div class="card-description">${repo.description || 'No description'}</div>
               <div class="card-footer">
-                <span class="card-language">${firstTag}</span>
+                <span class="card-category">${firstCat}</span>
                 ${repo.stargazers_count > 0 ? `<span class="card-stars">★ ${repo.stargazers_count}</span>` : ''}
               </div>
             </div>
@@ -566,7 +690,25 @@
       document.getElementById('projectCount').textContent = `${allRepos.length} projects`;
     }
 
-    // Load on page load
+    function updateAnalytics() {
+      const totalStars = allRepos.reduce((sum, r) => sum + r.stargazers_count, 0);
+      const totalForks = allRepos.reduce((sum, r) => sum + r.forks_count, 0);
+
+      const oldestRepo = allRepos.reduce((oldest, r) => {
+        const rDate = new Date(r.created_at);
+        const oDate = new Date(oldest.created_at);
+        return rDate < oDate ? r : oldest;
+      });
+      const yearsActive = Math.floor((new Date() - new Date(oldestRepo.created_at)) / (365.25 * 24 * 60 * 60 * 1000));
+
+      document.getElementById('statProjects').textContent = allRepos.length;
+      document.getElementById('statStars').textContent = totalStars;
+      document.getElementById('statForks').textContent = totalForks;
+      document.getElementById('statYears').textContent = yearsActive || '1';
+    }
+
+    // Initialize
+    initTheme();
     loadProjects();
   </script>
 </body>
