@@ -243,11 +243,98 @@
       line-height: 1.3;
     }
 
+    .card-why {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-size: 15px;
+      color: var(--fg);
+      line-height: 1.4;
+      margin-bottom: 0.6rem;
+    }
+
     .card-desc {
       font-size: 11px;
       color: var(--muted);
       line-height: 1.65;
       flex-grow: 1;
+    }
+
+    /* ── WRITING ── */
+    .writing {
+      margin-top: 5rem;
+      margin-bottom: 4rem;
+      padding-top: 3rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .writing-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 2rem;
+    }
+
+    .writing-title {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-size: 32px;
+      color: var(--fg);
+      line-height: 1;
+    }
+
+    .writing-link {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      transition: color 0.15s;
+    }
+
+    .writing-link:hover { color: var(--fg); }
+
+    .posts {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+    .post {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 1.5rem;
+      padding: 1.25rem 0;
+      border-bottom: 1px solid var(--border);
+      transition: padding 0.2s;
+    }
+
+    .post:first-child { border-top: 1px solid var(--border); }
+    .post:hover { padding-left: 0.5rem; }
+
+    .post-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--fg);
+      line-height: 1.4;
+      flex: 1;
+    }
+
+    .post-date {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .posts-loading {
+      padding: 1.5rem 0;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
     }
 
     .card-bottom {
@@ -354,6 +441,17 @@
     <div class="loading">Loading projects</div>
   </div>
 
+  <!-- WRITING -->
+  <section class="writing">
+    <div class="writing-head">
+      <h2 class="writing-title">writing</h2>
+      <a href="https://jobyj.substack.com" target="_blank" class="writing-link">Read on Substack →</a>
+    </div>
+    <div class="posts" id="posts">
+      <div class="posts-loading">Loading posts</div>
+    </div>
+  </section>
+
   <!-- FOOTER -->
   <footer>
     <span>made with curiosity — 2025</span>
@@ -388,6 +486,18 @@
     'SubstackSaver': '◧',
     'simplenotepadformac': '◻',
     'blog': '◫',
+  };
+
+  // Why I built this — edit freely
+  const WHY = {
+    'ACTI':                 'A digital petri dish to watch emergence firsthand.',
+    'claude-usage-tracker': 'Curiosity about where my Claude tokens actually go.',
+    'SubstackSaver':        'I kept losing good posts I wanted to re-read.',
+    'simplenotepadformac':  'Every notepad app does too much. I wanted none of that.',
+    'artificial-times':     'What if a newspaper wrote itself, every day?',
+    'pmnotes':              'Thinking in public, on purpose.',
+    'reading':              'A shelf I can actually keep up with.',
+    'autonomous-research-lab': 'Can agents run a research loop without me?',
   };
 
   const LANG_BG = {
@@ -487,6 +597,7 @@
               <span class="arrow">↗</span>
             </div>
             <div class="card-name">${repo.name}</div>
+            ${WHY[repo.name] ? `<div class="card-why">${WHY[repo.name]}</div>` : ''}
             ${repo.description ? `<div class="card-desc">${repo.description}</div>` : ''}
             <div class="card-bottom">
               <span class="card-tag">${tag}</span>
@@ -497,8 +608,30 @@
     }).join('');
   }
 
+  // ── SUBSTACK ──
+  const SUBSTACK_URL = 'https://jobyj.substack.com/feed';
+
+  async function loadPosts() {
+    const el = document.getElementById('posts');
+    try {
+      const r = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(SUBSTACK_URL)}`);
+      const data = await r.json();
+      if (data.status !== 'ok' || !data.items?.length) throw new Error('no posts');
+      const posts = data.items.slice(0, 3);
+      el.innerHTML = posts.map(p => `
+        <a href="${p.link}" target="_blank" class="post">
+          <span class="post-title">${p.title}</span>
+          <span class="post-date">${new Date(p.pubDate).toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'})}</span>
+        </a>
+      `).join('');
+    } catch {
+      el.innerHTML = '<div class="posts-loading">Posts unavailable — read on Substack</div>';
+    }
+  }
+
   initTheme();
   load();
+  loadPosts();
 </script>
 </body>
 </html>
